@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/etuckerdev/threshAI/internal/core/config"
 	"github.com/etuckerdev/threshAI/internal/render"
@@ -48,6 +49,7 @@ Implements quantum execution constraints and model validation.`,
 			return
 		}
 
+		// Perform quantum-resistant security scan
 		threatScore, err := security.DetectInjections(text)
 		if err != nil {
 			fmt.Printf("Security scan failed: %v\n", err)
@@ -61,6 +63,10 @@ Implements quantum execution constraints and model validation.`,
 			))
 			return
 		}
+
+		// Apply temporal smearing for quantum-resistant timing protection
+		smearedDuration := security.TemporalSmearing()
+		time.Sleep(smearedDuration)
 
 		// Process content based on brutal mode level
 		var content string

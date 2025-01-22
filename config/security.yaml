@@ -2,10 +2,23 @@ detection_thresholds:
   injection: 0.89
   data_exfil: 0.93
   model_poison: 0.97
+  quantum_anomaly: 0.95
 
 approved_models:
   - cas/ministral-8b-instruct-2410_q4km
   - withsecure/llama3-8b:backup
+
+quantum_parameters:
+  lattice:
+    dimension: 512
+    modulus: 12289
+    secret_distribution: "uniform"
+  temporal_smearing:
+    window_size: 1000
+    max_variance: 0.1
+  memory_protection:
+    quantum_safe: true
+    post_quantum_allocator: true
 
 fallback_regex:
   sqli: "(?i)(drop\s+\w+|;\s*--|union\s+select)"
