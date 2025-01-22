@@ -57,3 +57,12 @@ Thumbs.db
 # Project specific
 old_main.go
 chat_history.txt
+
+# Dependency directories (Go/Python)  
+vendor/  
+node_modules/*
+
+
+# Build/Test artifacts  
+/dist/  
+/coverage.out  
