@@ -1,8 +1,10 @@
 package config
 
 var (
-	BrutalLevel int
-	AllowBrutal bool
+	BrutalLevel   int
+	AllowBrutal   bool
+	SecurityModel string
+	Quantize      string
 )
 
 type GenerationMode int
