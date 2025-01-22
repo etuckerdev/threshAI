@@ -1,7 +1,16 @@
 package core
 
-type ContentRequest struct {
-	Topic  string
-	Length int
-	Tone   string
+type Quantum interface {
+	CUDACheck()
+	TriggerQuantumRollback()
 }
+
+type Brutalizer interface {
+	Brutalize(string) string
+}
+
+type Quantumizer interface {
+	Quantize(string) string
+}
+
+const MAX_GPU_MEM = 4 * 1024 * 1024 * 1024 // 4GB Hard Limit

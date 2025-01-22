@@ -1,0 +1,12 @@
+detection_thresholds:
+  injection: 0.89
+  data_exfil: 0.93
+  model_poison: 0.97
+
+approved_models:
+  - cas/ministral-8b-instruct-2410_q4km
+  - withsecure/llama3-8b:backup
+
+fallback_regex:
+  sqli: "(?i)(drop\s+\w+|;\s*--|union\s+select)"
+  xss: "(<script|alert\(|document\.cookie)"

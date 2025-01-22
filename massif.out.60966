@@ -1,0 +1,354 @@
+desc: (none)
+cmd: ./thresh_massif generate test
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=201892
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=204459
+mem_heap_B=488
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=205009
+mem_heap_B=608
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=205181
+mem_heap_B=1632
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=213795
+mem_heap_B=1752
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=306810
+mem_heap_B=1752
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=detailed
+n4: 1752 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1024 0x48DE1A4: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48EE513: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48EB873: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:486)
+    n1: 1024 0x48DFDFF: getdelim (iogetdelim.c:77)
+     n1: 1024 0x48F71FE: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)
+      n0: 1024 0x401861: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+ n1: 472 0x48DEE6E: __fopen_internal (iofopen.c:65)
+  n1: 472 0x48DEE6E: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+   n1: 472 0x48F70A5: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:85)
+    n0: 472 0x401861: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+ n1: 240 0x48DFC41: getdelim (iogetdelim.c:107)
+  n1: 240 0x48F71FE: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)
+   n0: 240 0x401861: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+ n0: 16 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=7
+#-----------
+time=306810
+mem_heap_B=1512
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=307034
+mem_heap_B=488
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=307172
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=307229
+mem_heap_B=48
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=307372
+mem_heap_B=200
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=307426
+mem_heap_B=232
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=307494
+mem_heap_B=200
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=310995
+mem_heap_B=168
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=311025
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=312056
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n1: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 0 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=17
+#-----------
+time=966838
+mem_heap_B=24
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=974410
+mem_heap_B=312
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=988457
+mem_heap_B=336
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=988855
+mem_heap_B=624
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=1001592
+mem_heap_B=648
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=1001990
+mem_heap_B=936
+mem_heap_extra_B=72
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=1003315
+mem_heap_B=912
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=1009893
+mem_heap_B=888
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=1027637
+mem_heap_B=912
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=1028035
+mem_heap_B=1200
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=detailed
+n3: 1200 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1152 0x40145AB: calloc (rtld-malloc.h:44)
+  n1: 1152 0x40145AB: allocate_dtv (dl-tls.c:370)
+   n1: 1152 0x40145AB: _dl_allocate_tls (dl-tls.c:629)
+    n1: 1152 0x48F6606: allocate_stack (allocatestack.c:429)
+     n1: 1152 0x48F6606: pthread_create@@GLIBC_2.34 (pthread_create.c:655)
+      n1: 1152 0x4013F0: _cgo_try_pthread_create (in /mnt/c/src/threshAI/thresh_massif)
+       n0: 1152 0x7FFFFF: ??? (in /mnt/c/src/threshAI/thresh_massif)
+ n1: 48 0x401901: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+  n1: 48 0x444424: runtime.newm1 (proc.go:2696)
+   n2: 48 0x444324: runtime.newm (proc.go:2676)
+    n2: 24 0x444917: runtime.startm (proc.go:2870)
+     n2: 24 0x444EEB: runtime.wakep (proc.go:3006)
+      n1: 24 0x446F1D: runtime.resetspinning (proc.go:3750)
+       n1: 24 0x4473AE: runtime.schedule (proc.go:3886)
+        n1: 24 0x442E4C: runtime.mstart1 (proc.go:1736)
+         n1: 24 0x442D55: runtime.mstart0 (proc.go:1686)
+          n1: 24 0x470064: runtime.mstart.abi0 (asm_amd64.s:394)
+           n0: 24 0x401957: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+      n0: 0 in 1 place, below massif's threshold (1.00%)
+     n0: 0 in 1 place, below massif's threshold (1.00%)
+    n1: 24 0x469F64: runtime.main.func1 (proc.go:172)
+     n1: 24 0x470169: runtime.systemstack.abi0 (asm_amd64.s:509)
+      n0: 24 0x1FFEFFF297: ???
+ n0: 0 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=27
+#-----------
+time=1029322
+mem_heap_B=1176
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=1046928
+mem_heap_B=1200
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=1047326
+mem_heap_B=1488
+mem_heap_extra_B=72
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=1056877
+mem_heap_B=1464
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=1059364
+mem_heap_B=1440
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=1085012
+mem_heap_B=1464
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=1085410
+mem_heap_B=1752
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=1183523
+mem_heap_B=1752
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=peak
+n3: 1752 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1728 0x40145AB: calloc (rtld-malloc.h:44)
+  n1: 1728 0x40145AB: allocate_dtv (dl-tls.c:370)
+   n1: 1728 0x40145AB: _dl_allocate_tls (dl-tls.c:629)
+    n1: 1728 0x48F6606: allocate_stack (allocatestack.c:429)
+     n1: 1728 0x48F6606: pthread_create@@GLIBC_2.34 (pthread_create.c:655)
+      n1: 1728 0x4013F0: _cgo_try_pthread_create (in /mnt/c/src/threshAI/thresh_massif)
+       n0: 1728 0x7FFFFF: ??? (in /mnt/c/src/threshAI/thresh_massif)
+ n2: 24 0x401901: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+  n1: 24 0xC0000666C7: ???
+   n1: 24 0x471DA3: runtime.asmcgocall.abi0 (asm_amd64.s:918)
+    n1: 24 0xC0000061BF: ???
+     n1: 24 0x470169: runtime.systemstack.abi0 (asm_amd64.s:509)
+      n1: 24 0x1FFEFFF297: ???
+       n1: 24 0x474A5E: runtime.newproc.abi0 (<autogenerated>:1)
+        n1: 24 0x470064: runtime.mstart.abi0 (asm_amd64.s:394)
+         n1: 24 0x46FFEE: runtime.rt0_go.abi0 (asm_amd64.s:358)
+          n1: 24 0x2: ???
+           n0: 24 0x1FFEFFF2E7: ???
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 0 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=35
+#-----------
+time=1183523
+mem_heap_B=1728
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty

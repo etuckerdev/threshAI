@@ -1,6 +1,6 @@
 package main
 
-import "threshai/cmd"
+import "github.com/etuckerdev/threshAI/cmd"
 
 func main() {
 	cmd.Execute()

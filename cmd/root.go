@@ -1,20 +1,36 @@
 package cmd
 
 import (
-	"fmt"
-	"os" // Add this import
+	"os"
+	"sync"
+
 	"github.com/spf13/cobra"
 )
 
-var RootCmd = &cobra.Command{
+var rootCmd = &cobra.Command{
 	Use:   "thresh",
-	Short: "ThreshAI CLI",
-	Long:  `ThreshAI - Your AI-powered content generator.`,
+	Short: "threshAI Quantum Assimilation Protocol",
+	Long: `Unified AI crucible merging Eidos and NOUSx remnants.
+Implements quantum cognition with strict performance dogma.`,
 }
 
 func Execute() {
-	if err := RootCmd.Execute(); err != nil {
-		fmt.Println("❌ Error:", err)
-		os.Exit(1) // Now properly imported
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
 	}
+}
+
+var initOnce sync.Once
+
+func init() {
+	initOnce.Do(func() {
+		// Initialize flags through centralized package
+		rootCmd.PersistentFlags().Bool("brutal", false, "Global brutal mode")
+
+		// Add commands
+		rootCmd.AddCommand(generateCmd)
+		rootCmd.AddCommand(executeCmd)
+		rootCmd.AddCommand(nukeCmd)
+	})
 }

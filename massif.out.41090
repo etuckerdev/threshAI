@@ -1,0 +1,299 @@
+desc: (none)
+cmd: ./thresh_massif generate test
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=201325
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=203892
+mem_heap_B=488
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=204442
+mem_heap_B=608
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=204614
+mem_heap_B=1632
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=213228
+mem_heap_B=1752
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=306243
+mem_heap_B=1752
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=peak
+n4: 1752 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1024 0x48DE1A4: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48EE513: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48EB873: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:486)
+    n1: 1024 0x48DFDFF: getdelim (iogetdelim.c:77)
+     n1: 1024 0x48F71FE: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)
+      n0: 1024 0x401861: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+ n1: 472 0x48DEE6E: __fopen_internal (iofopen.c:65)
+  n1: 472 0x48DEE6E: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+   n1: 472 0x48F70A5: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:85)
+    n0: 472 0x401861: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+ n1: 240 0x48DFC41: getdelim (iogetdelim.c:107)
+  n1: 240 0x48F71FE: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)
+   n0: 240 0x401861: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+ n0: 16 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=7
+#-----------
+time=306243
+mem_heap_B=1512
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=306467
+mem_heap_B=488
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=306605
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=306662
+mem_heap_B=48
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=306805
+mem_heap_B=200
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=306859
+mem_heap_B=232
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=306927
+mem_heap_B=200
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=310428
+mem_heap_B=168
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=310458
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=311489
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n1: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 0 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=17
+#-----------
+time=963293
+mem_heap_B=24
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=970865
+mem_heap_B=312
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=984912
+mem_heap_B=336
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=985310
+mem_heap_B=624
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=986635
+mem_heap_B=600
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=1004019
+mem_heap_B=624
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=1004417
+mem_heap_B=912
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=1005704
+mem_heap_B=888
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=1012128
+mem_heap_B=864
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=1029337
+mem_heap_B=888
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=detailed
+n3: 888 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 864 0x40145AB: calloc (rtld-malloc.h:44)
+  n1: 864 0x40145AB: allocate_dtv (dl-tls.c:370)
+   n1: 864 0x40145AB: _dl_allocate_tls (dl-tls.c:629)
+    n1: 864 0x48F6606: allocate_stack (allocatestack.c:429)
+     n1: 864 0x48F6606: pthread_create@@GLIBC_2.34 (pthread_create.c:655)
+      n1: 864 0x4013F0: _cgo_try_pthread_create (in /mnt/c/src/threshAI/thresh_massif)
+       n0: 864 0x7FFFFF: ??? (in /mnt/c/src/threshAI/thresh_massif)
+ n1: 24 0x401901: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+  n1: 24 0x444424: runtime.newm1 (proc.go:2696)
+   n2: 24 0x444324: runtime.newm (proc.go:2676)
+    n2: 24 0x444917: runtime.startm (proc.go:2870)
+     n2: 24 0x444EEB: runtime.wakep (proc.go:3006)
+      n1: 24 0x446F1D: runtime.resetspinning (proc.go:3750)
+       n1: 24 0x4473AE: runtime.schedule (proc.go:3886)
+        n1: 24 0x442E4C: runtime.mstart1 (proc.go:1736)
+         n1: 24 0x442D55: runtime.mstart0 (proc.go:1686)
+          n1: 24 0x470064: runtime.mstart.abi0 (asm_amd64.s:394)
+           n0: 24 0x401957: runtime/cgo(.text) (in /mnt/c/src/threshAI/thresh_massif)
+      n0: 0 in 1 place, below massif's threshold (1.00%)
+     n0: 0 in 1 place, below massif's threshold (1.00%)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 0 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=27
+#-----------
+time=1029735
+mem_heap_B=1176
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=1039954
+mem_heap_B=1152
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=1065287
+mem_heap_B=1176
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=1065685
+mem_heap_B=1464
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=1163097
+mem_heap_B=1440
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
