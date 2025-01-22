@@ -51,7 +51,6 @@ func init() {
 	// Initialize generate command flags
 	generateCmd.Flags().IntVar(&config.BrutalLevel, "brutal", 0, "Brutality tier (0-3)")
 	generateCmd.Flags().StringVar(&config.SecurityModel, "security-model", "cas/ministral-8b-instruct-2410_q4km", "Specify model override")
-	generateCmd.Flags().StringVar(&config.Quantize, "quantize", "", "Quantization level (Q4_K_M, Q5_K_S)")
 	generateCmd.Flags().StringVar(&config.Quantize, "quantize", "Q4_K_M", "Quantization level (Q4_K_M, Q5_K_S)")
 
 	// Register generate command

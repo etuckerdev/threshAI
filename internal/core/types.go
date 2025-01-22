@@ -14,3 +14,7 @@ type Quantumizer interface {
 }
 
 const MAX_GPU_MEM = 4 * 1024 * 1024 * 1024 // 4GB Hard Limit
+
+type Client struct {
+	BaseURL string
+}

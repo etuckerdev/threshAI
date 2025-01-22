@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -33,7 +34,8 @@ func GenerateWithOllama(input string, stream bool) (string, error) {
 	// In brutal mode we skip streaming and validation
 	if config.BrutalLevel > 0 {
 		// Direct generation through Ollama
-		result, err := nous.GenerateText(input, config.BrutalLevel, config.SecurityModel, config.Quantize)
+		ctx := context.Background()
+		result, err := nous.GenerateText(ctx, input, config.BrutalLevel, config.SecurityModel, config.Quantize)
 		if err != nil {
 			return "", fmt.Errorf("brutal generation failed: %w", err)
 		}
