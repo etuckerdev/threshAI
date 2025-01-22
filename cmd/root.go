@@ -2,32 +2,33 @@ package cmd
 
 import (
 	"os"
-	"sync"
+
+	webcmd "threshAI/cmd/web"
 
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "thresh",
-	Short: "threshAI Quantum Assimilation Protocol",
-	Long: `Unified AI crucible merging Eidos and NOUSx remnants.
-Implements quantum cognition with strict performance dogma.`,
+	Short: "Thresh AI command line interface",
+	Long:  `A command line interface for interacting with the Thresh AI system`,
+}
+
+func init() {
+	// Add all commands
+	AddCommands()
 }
 
 func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
-var initOnce sync.Once
-
-func init() {
-	initOnce.Do(func() {
-		// Add commands
-		rootCmd.AddCommand(generateCmd)
-		rootCmd.AddCommand(executeCmd)
-		rootCmd.AddCommand(nukeCmd)
-	})
+// AddCommands registers all the command modules
+func AddCommands() {
+	// Add web interface command
+	rootCmd.AddCommand(webcmd.WebCmd)
+	// Add generate command
+	rootCmd.AddCommand(generateCmd)
 }
