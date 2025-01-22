@@ -6,9 +6,9 @@ import (
 	"os/exec"
 	"strconv"
 
-	"threshAI/internal/analytics"
-	"threshAI/internal/quantum"
-	"threshAI/internal/security"
+	"threshAI/pkg/analytics"
+	"threshAI/pkg/quantum"
+	"threshAI/pkg/security"
 )
 
 var securityModel = security.SecurityConfig{}.ApprovedModels[0]
@@ -55,7 +55,7 @@ var brutalPresets = map[int]BrutalConfig{
 	},
 }
 
-func GenerateBrutal(brutalMode int) {
+func GenerateBrutal(brutalMode int, prompt string, maxTokens int) {
 	preset, exists := brutalPresets[brutalMode]
 	if !exists {
 		return

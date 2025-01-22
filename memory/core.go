@@ -2,7 +2,9 @@ package memory
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -36,4 +38,23 @@ func (m *Memory) AddInteraction(userInput, eidosResp string) {
 		EidosResp: eidosResp,
 		Timestamp: time.Now().Format(time.RFC3339),
 	})
+}
+
+func (m *Memory) RetrieveLastInteraction() (*Interaction, error) {
+	if len(m.Interactions) == 0 {
+		return nil, fmt.Errorf("no interactions found")
+	}
+	return &m.Interactions[len(m.Interactions)-1], nil
+}
+
+func (m *Memory) RetrieveRelevantContext(userInput string) []Interaction {
+	// Use vector similarity search (e.g., OpenAI embeddings)
+	// or keyword matching to find related interactions
+	var relevant []Interaction
+	for _, interaction := range m.Interactions {
+		if strings.Contains(strings.ToLower(interaction.UserInput), strings.ToLower(userInput)) {
+			relevant = append(relevant, interaction)
+		}
+	}
+	return relevant
 }

@@ -2,55 +2,13 @@ package chat
 
 import (
 	"fmt"
-	"os"
 	"strings"
-	"time"
 
-	"encoding/json"
+	"threshAI/memory"
 )
 
-type Interaction struct {
-	UserInput string
-	EidosResp string
-	Timestamp string
-}
-
-type Memory struct {
-	Interactions []Interaction
-	Context      map[string]interface{}
-}
-
-func LoadMemory() *Memory {
-	// Load from JSON file or database
-	data, _ := os.ReadFile("memory.json")
-	var mem Memory
-	json.Unmarshal(data, &mem)
-	return &mem
-}
-
-func (m *Memory) Save() {
-	data, _ := json.Marshal(m)
-	os.WriteFile("memory.json", data, 0644)
-}
-
-func (m *Memory) AddInteraction(userInput, eidosResp string) {
-	m.Interactions = append(m.Interactions, Interaction{
-		UserInput: userInput,
-		EidosResp: eidosResp,
-		Timestamp: time.Now().Format(time.RFC3339),
-	})
-}
-
-func (m *Memory) RetrieveRelevantContext(userInput string) []Interaction {
-	// Use vector similarity search (e.g., OpenAI embeddings)
-	// or keyword matching to find related interactions
-	var relevant []Interaction
-	for _, interaction := range m.Interactions {
-		if strings.Contains(strings.ToLower(interaction.UserInput), strings.ToLower(userInput)) {
-			relevant = append(relevant, interaction)
-		}
-	}
-	return relevant
+func LoadMemory() *memory.Memory {
+	return memory.LoadMemory()
 }
 
 func NeedsClarification(userInput string) (bool, string) {
@@ -71,7 +29,7 @@ func GetUserInput() string {
 	return userInput
 }
 
-func GenerateResponse(userInput string, context []Interaction) string {
+func GenerateResponse(userInput string, context []memory.Interaction) string {
 	// Dummy response generator for now
 	if len(context) > 0 {
 		return "Acknowledged. Context: " + context[0].UserInput
@@ -95,12 +53,12 @@ func ChatLoop() {
 
 		// Handle "go back" requests
 		if strings.Contains(strings.ToLower(userInput), "go back") {
-			lastInput, lastResp := mem.RetrieveLastInteraction()
-			if lastInput == "" {
+			lastInteraction, err := mem.RetrieveLastInteraction()
+			if err != nil {
 				fmt.Println("Eidos: No previous conversation found.")
 			} else {
-				fmt.Printf("Eidos: In our last conversation, you asked: %s\n", lastInput)
-				fmt.Printf("Eidos: My response was: %s\n", lastResp)
+				fmt.Printf("Eidos: In our last conversation, you asked: %s\n", lastInteraction.UserInput)
+				fmt.Printf("Eidos: My response was: %s\n", lastInteraction.EidosResp)
 			}
 			continue
 		}

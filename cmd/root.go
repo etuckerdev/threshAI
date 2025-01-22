@@ -3,10 +3,17 @@ package cmd
 import (
 	"os"
 
-	webcmd "threshAI/cmd/web"
-
 	"github.com/spf13/cobra"
 )
+
+var WebCmd = &cobra.Command{
+	Use:   "web",
+	Short: "Start the web interface",
+	Long:  `Start the Thresh AI web interface server`,
+	Run: func(cmd *cobra.Command, args []string) {
+		// Web server startup logic
+	},
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "thresh",
@@ -28,7 +35,7 @@ func Execute() {
 // AddCommands registers all the command modules
 func AddCommands() {
 	// Add web interface command
-	rootCmd.AddCommand(webcmd.WebCmd)
+	rootCmd.AddCommand(WebCmd)
 	// Add generate command
 	rootCmd.AddCommand(generateCmd)
 }

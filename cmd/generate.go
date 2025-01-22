@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	"threshAI/internal/analytics"
-	"threshAI/internal/core/utils"
-	"threshAI/internal/license"
-	"threshAI/internal/monitor"
-	"threshAI/internal/nous/ollama"
-	"threshAI/internal/quantum"
-	"threshAI/internal/telemetry"
+	"threshAI/pkg/analytics"
+	"threshAI/pkg/core/utils"
+	"threshAI/pkg/license"
+	"threshAI/pkg/llm/ollama"
+	"threshAI/pkg/monitor"
+	"threshAI/pkg/quantum"
+	"threshAI/pkg/telemetry"
 
 	"github.com/spf13/cobra"
 )
@@ -49,9 +49,22 @@ var generateCmd = &cobra.Command{
 		var shardOutputs []string
 		var err error
 
+		// Create Ollama client with default configuration
+		client := ollama.NewOllamaAdapter(ollama.OllamaConfig{
+			BaseURL:         "http://localhost:11434",
+			Model:           "codellama:70b",
+			MaxTokens:       512,
+			CacheTTL:        5 * time.Minute,
+			RequestTimeout:  30 * time.Second,
+			MaxRetries:      3,
+			Temperature:     0.7,
+			CacheEnabled:    true,
+			FallbackEnabled: false,
+		}, nil) // No cache for now
+
 		if quantumMode {
 			// Generate multiple shards for quantum entanglement calculation
-			shardOutputs, err = ollama.GenerateQuantumShards(prompt, 3, 512) // Generate 3 shards with max 512 tokens
+			shardOutputs, err = client.GenerateQuantumShards(prompt, 3, 512) // Generate 3 shards with max 512 tokens
 			if err != nil {
 				return fmt.Errorf("quantum generation failed: %v", err)
 			}
@@ -59,14 +72,14 @@ var generateCmd = &cobra.Command{
 			fmt.Println(output)
 		} else if brutalMode > 0 {
 			// Call the brutal generation logic
-			output, err := ollama.GenerateBrutal(prompt, brutalMode, 512)
+			output, err := client.GenerateBrutal(prompt, brutalMode, 512)
 			if err != nil {
 				return fmt.Errorf("brutal generation failed: %v", err)
 			}
 			fmt.Println(output)
 		} else {
 			// Standard generation using updated Ollama client
-			output, err = ollama.Generate(prompt, brutalMode)
+			output, err = client.Generate(prompt, brutalMode)
 			if err != nil {
 				return fmt.Errorf("error generating content: %v", err)
 			}

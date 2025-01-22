@@ -4,7 +4,7 @@ package monitor
 import (
 	"fmt"
 
-	"threshAI/internal/analytics"
+	"threshAI/pkg/analytics"
 )
 
 func LogMetrics(data interface{}) {

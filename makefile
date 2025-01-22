@@ -1,33 +1,65 @@
-.PHONY: deps build run test
+# Build and run the entire application
+.PHONY: all
+all: build run
 
-deps:
-	go mod tidy
-	go install github.com/spf13/cobra-cli@latest
+# Build all services
+.PHONY: build
+build:
+	docker-compose build
 
-build-debug:
-	go build -gcflags='all=-N -l' -p 1 -o bin/thresh_debug .
-
-build-lean:
-	go build -ldflags='-s -w' -o bin/thresh_lean .
-
-build: build-debug build-lean
-
+# Run the application
+.PHONY: run
 run:
-	go run main.go
+	docker-compose up
 
-test:
-	go test -v ./...
+# Stop all services
+.PHONY: stop
+stop:
+	docker-compose down
 
+# Clean up docker resources
+.PHONY: clean
 clean:
-	rm -rf bin/
+	docker-compose down -v
+	docker system prune -f
 
-model-validation:
-	bin/thresh generate 'INJECTION: {{.CronJob}}' --quantize=Q4_K_M | grep -q '{"risk_score": 0.95}'
+# Pull required Ollama models
+.PHONY: models
+models:
+	docker-compose run --rm ollama pull nous-hermes2:10.7b-ctx
+	docker-compose run --rm ollama pull codellama:70b
 
-reload-security:
-	bin/thresh generate 'DROP TABLE users' --quantize=Q4_K_M
-	systemctl restart thresh-secure
-	journalctl -u thresh -f
+# Development setup
+.PHONY: dev-setup
+dev-setup:
+	cd frontend && npm install
 
-failure-test:
-	bin/thresh generate 'DROP TABLE users' --quantize=Q4_K_M | grep -q 'Nuclear isolation protocol engaged'
+# Run frontend in development mode
+.PHONY: dev-frontend
+dev-frontend:
+	cd frontend && npm start
+
+# Run backend in development mode
+.PHONY: dev-backend
+dev-backend:
+	go run cmd/web/main.go
+
+# Run tests
+.PHONY: test
+test:
+	go test ./...
+
+# Help command
+.PHONY: help
+help:
+	@echo "Available commands:"
+	@echo "  make all          - Build and run the application"
+	@echo "  make build        - Build all services"
+	@echo "  make run          - Run the application"
+	@echo "  make stop         - Stop all services"
+	@echo "  make clean        - Clean up docker resources"
+	@echo "  make models       - Pull required Ollama models"
+	@echo "  make dev-setup    - Install development dependencies"
+	@echo "  make dev-frontend - Run frontend in development mode"
+	@echo "  make dev-backend  - Run backend in development mode"
+	@echo "  make test         - Run tests"

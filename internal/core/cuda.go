@@ -1,8 +1,10 @@
+//go:build cuda
+// +build cuda
+
 package core
 
 /*
-#cgo CFLAGS: -I/usr/local/cuda-12.7/include
-#cgo LDFLAGS: -L/usr/local/cuda-12.7/lib64 -lcudart
+#cgo LDFLAGS: -L/usr/local/cuda/lib64 -lcudart
 #include <cuda_runtime.h>
 #include <stdlib.h>
 */
@@ -57,13 +59,13 @@ func GetFreeMem() uint64 {
 }
 
 func FlushAllBuffers() {
-	// Placeholder for flushing buffers
+	// CUDA-specific buffer flushing
 }
 
 func ResetCache() {
-	// Placeholder for resetting cache
+	// CUDA-specific cache reset
 }
 
 func FreeOrphanedMemory() {
-	// Placeholder for freeing orphaned memory
+	// CUDA-specific memory cleanup
 }

@@ -60,7 +60,7 @@ chat_history.txt
 
 # Dependency directories (Go/Python)  
 vendor/  
-node_modules/*
+node_modules/
 
 
 # Build/Test artifacts  

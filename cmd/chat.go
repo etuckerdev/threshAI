@@ -4,10 +4,24 @@ import (
 	"fmt"
 	"strings"
 
-	"threshAI/internal/nous/ollama"
 	"threshAI/memory"
+	"threshAI/pkg/llm/ollama"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/spf13/cobra"
+)
+
+var (
+	ollamaConfig = ollama.OllamaConfig{
+		BaseURL:    "http://localhost:11434",
+		Model:      "llama2",
+		MaxRetries: 3,
+	}
+	redisClient = redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
 )
 
 func GetUserInput() string {
@@ -28,14 +42,11 @@ func GenerateResponse(userInput string, context []memory.Interaction) string {
 		prompt = contextStr + "\nCurrent query: " + userInput
 	}
 
-	// Generate response using nous/ollama
-	output, err := ollama.Generate(prompt, 0) // 0 for normal mode (non-brutal)
+	// Generate response using ollama adapter
+	adapter := ollama.NewOllamaAdapter(ollamaConfig, redisClient)
+	output, err := adapter.Complete(prompt)
 	if err != nil {
-		// Try regular text generation without context if ollama fails
-		output, err = ollama.GenerateBrutal(prompt, 0, 512) // 512 max tokens for response
-		if err != nil {
-			return fmt.Sprintf("Oops, something went wrong generating a response. Error: %s", err)
-		}
+		return fmt.Sprintf("Oops, something went wrong generating a response. Error: %s", err)
 	}
 
 	if output == "" {
@@ -67,10 +78,12 @@ func ChatLoop() {
 
 		// Handle "go back" requests
 		if strings.Contains(strings.ToLower(userInput), "go back") {
-			lastInput, lastResp := mem.RetrieveLastInteraction()
-			if lastInput == "" {
+			lastInteraction, err := mem.RetrieveLastInteraction()
+			if err != nil {
 				fmt.Println("Eidos: No previous conversation found.")
 			} else {
+				lastInput := lastInteraction.UserInput
+				lastResp := lastInteraction.EidosResp
 				fmt.Printf("Eidos: In our last conversation, you asked: %s\n", lastInput)
 				fmt.Printf("Eidos: My response was: %s\n", lastResp)
 			}

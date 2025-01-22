@@ -11,6 +11,16 @@ type Config struct {
 	Ollama struct {
 		URL string `yaml:"url"`
 	} `yaml:"ollama"`
+
+	DeepSeek struct {
+		APIKey         string  `yaml:"-"` // From environment variable
+		BaseURL        string  `yaml:"base_url"`
+		MaxTokens      int     `yaml:"max_tokens"`
+		CacheTTL       string  `yaml:"cache_ttl"`
+		RequestTimeout string  `yaml:"request_timeout"`
+		MaxRetries     int     `yaml:"max_retries"`
+		Temperature    float64 `yaml:"temperature"`
+	} `yaml:"deepseek"`
 }
 
 type SecurityConfig struct {
