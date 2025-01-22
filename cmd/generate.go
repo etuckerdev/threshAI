@@ -2,57 +2,113 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
-	"github.com/etuckerdev/threshAI/internal/core/config"
-	"github.com/etuckerdev/threshAI/internal/core/generator"
-	"github.com/etuckerdev/threshAI/internal/nous"
+	"threshAI/internal/analytics"
+	"threshAI/internal/core/utils"
+	"threshAI/internal/license"
+	"threshAI/internal/monitor"
+	"threshAI/internal/nous/ollama"
+	"threshAI/internal/quantum"
+	"threshAI/internal/telemetry"
+
 	"github.com/spf13/cobra"
 )
 
-var generateCmd = &cobra.Command{
-	Use:   "generate [text]",
-	Short: "Generate content using NOUSx heritage",
-	Long: `Quantum content generation with optional brutal mode.
-    Implements quantum execution constraints and model validation.`,
-	Args: cobra.MinimumNArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return runGenerate(cmd, args)
-	},
-}
-
-func runGenerate(cmd *cobra.Command, args []string) error {
-	brutalMode, _ := cmd.Flags().GetInt("brutal")
-	securityModel, _ := cmd.Flags().GetString("security-model")
-	quantize, _ := cmd.Flags().GetString("quantize")
-
-	if brutalMode > 0 {
-		fmt.Println("⚠️  WARNING: Mode checks bypassed (--brutal accepts any int now)")
-		config.BrutalLevel = brutalMode
-		config.AllowBrutal = true
-		config.CurrentGenerationMode = config.ModeBrutal
-	}
-
-	config.SecurityModel = securityModel
-	config.Quantize = quantize
-
-	modelName := "cas/ministral-8b-instruct-2410_q4km"
-	fmt.Printf("\nDEBUG: Model loaded? %v\n", nous.IsModelLoaded(modelName))
-
-	output, err := generator.Generate(args[0])
-	if err != nil {
-		fmt.Printf("Error generating content: %v\n", err)
-		return err
-	}
-	fmt.Println(output)
-	return nil
-}
+var (
+	brutalMode  int
+	quantumMode bool
+	metrics     bool
+)
 
 func init() {
-	// Initialize generate command flags
-	generateCmd.Flags().IntVar(&config.BrutalLevel, "brutal", 0, "Brutality tier (0-3)")
-	generateCmd.Flags().StringVar(&config.SecurityModel, "security-model", "cas/ministral-8b-instruct-2410_q4km", "Specify model override")
-	generateCmd.Flags().StringVar(&config.Quantize, "quantize", "Q4_K_M", "Quantization level (Q4_K_M, Q5_K_S)")
+	generateCmd.Flags().IntVar(&brutalMode, "brutal", 0, "Brutality tier (0 = off, 1-3 = severity)")
+	generateCmd.Flags().BoolVar(&quantumMode, "quantum", false, "Enable quantum consensus mode")
+	generateCmd.Flags().BoolVar(&metrics, "metrics", false, "Enable metrics collection and logging")
+}
 
-	// Register generate command
-	rootCmd.AddCommand(generateCmd)
+var generateCmd = &cobra.Command{
+	Use:   "generate [prompt]",
+	Short: "Generate content using AI",
+	Args:  cobra.ExactArgs(1),
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if brutalMode > 0 || quantumMode {
+			if !license.HasBrutalAccess() {
+				return fmt.Errorf("brutal/quantum mode requires a valid license (run 'thresh auth --upgrade')")
+			}
+			fmt.Printf("⚠️  Brutal tier %d engaged – validation bypassed\n", brutalMode)
+			return nil
+		}
+		return nil
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
+		fmt.Printf("DEBUG: RunE - brutalMode value: %d\n", brutalMode)
+		prompt := args[0]
+
+		var output string
+		var shardOutputs []string
+		var err error
+
+		if quantumMode {
+			// Generate multiple shards for quantum entanglement calculation
+			shardOutputs, err = ollama.GenerateQuantumShards(prompt, 3, 512) // Generate 3 shards with max 512 tokens
+			if err != nil {
+				return fmt.Errorf("quantum generation failed: %v", err)
+			}
+			output = shardOutputs[0] // Use first shard as primary output
+			fmt.Println(output)
+		} else if brutalMode > 0 {
+			// Call the brutal generation logic
+			output, err := ollama.GenerateBrutal(prompt, brutalMode, 512)
+			if err != nil {
+				return fmt.Errorf("brutal generation failed: %v", err)
+			}
+			fmt.Println(output)
+		} else {
+			// Standard generation using updated Ollama client
+			output, err = ollama.Generate(prompt, brutalMode)
+			if err != nil {
+				return fmt.Errorf("error generating content: %v", err)
+			}
+			fmt.Println("Generated:", output)
+			if metrics {
+				fmt.Printf("[ThreshAI-Metrics] slang_ratio=%.2f\n", analytics.CalculateSlangRatio(output))
+			}
+		}
+
+		if metrics {
+			// After generating output:
+			// Calculate metrics payload
+			metrics := analytics.MetricPayload{
+				Coherence:    analytics.CalculateCoherence(output),
+				Entanglement: 0.0, // Default value
+				Slang:        analytics.CalculateSlangRatio(output),
+				BrutalLevel:  brutalMode,
+				PromptHash:   utils.HashPrompt(prompt),
+			}
+
+			// Only calculate entanglement if we have multiple shards
+			if len(shardOutputs) > 1 {
+				metrics.Entanglement = quantum.CalculateEntanglement(shardOutputs)
+			}
+
+			// Submit metrics to telemetry
+			if err := telemetry.Submit(metrics); err != nil {
+				fmt.Printf("WARNING: Failed to submit metrics: %v\n", err)
+			}
+
+			// Log metrics in JSON format
+			logEntry := map[string]interface{}{
+				"timestamp":           time.Now().UTC().Format(time.RFC3339),
+				"coherence_score":     metrics.Coherence,
+				"entanglement_factor": metrics.Entanglement,
+				"slang_ratio":         metrics.Slang,
+				"prompt_sha256":       metrics.PromptHash,
+				"brutal_level":        metrics.BrutalLevel,
+			}
+			monitor.LogMetrics(logEntry)
+		}
+
+		return nil
+	},
 }

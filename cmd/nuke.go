@@ -5,8 +5,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/etuckerdev/threshAI/internal/security"
-	"github.com/etuckerdev/threshAI/pkg/models"
+	"threshAI/pkg/models"
+
+	"threshAI/internal/security"
+
 	"github.com/spf13/cobra"
 )
 

@@ -88,6 +88,24 @@ func (a *GPUMemoryAllocator) EnableMixedPrecision() error {
 	return cuda.EnableTensorCores(true)
 }
 
+// Free releases a specific GPU memory allocation
+func (a *GPUMemoryAllocator) Free(ptr unsafe.Pointer) error {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
+	if _, exists := a.allocations[uintptr(ptr)]; !exists {
+		return nil
+	}
+
+	err := cuda.Free(ptr)
+	if err != nil {
+		return err
+	}
+
+	delete(a.allocations, uintptr(ptr))
+	return nil
+}
+
 // FreeAll releases all allocated GPU memory
 func (a *GPUMemoryAllocator) FreeAll() error {
 	a.mu.Lock()

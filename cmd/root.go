@@ -25,9 +25,6 @@ var initOnce sync.Once
 
 func init() {
 	initOnce.Do(func() {
-		// Initialize flags through centralized package
-		rootCmd.PersistentFlags().Bool("brutal", false, "Global brutal mode")
-
 		// Add commands
 		rootCmd.AddCommand(generateCmd)
 		rootCmd.AddCommand(executeCmd)

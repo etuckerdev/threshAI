@@ -4,7 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/etuckerdev/threshAI/internal/core/memory"
+	"threshAI/internal/core/memory"
+
 	"github.com/spf13/cobra"
 )
 

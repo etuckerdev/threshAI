@@ -7,7 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/etuckerdev/threshAI/internal/security"
+	"threshAI/internal/security"
+
 	"github.com/spf13/cobra"
 )
 

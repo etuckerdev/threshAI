@@ -23,3 +23,38 @@ quantum_parameters:
 fallback_regex:
   sqli: "(?i)(drop\s+\w+|;\s*--|union\s+select)"
   xss: "(<script|alert\(|document\.cookie)"
+
+# Brutal Mode Quantization Presets
+brutal_presets:
+  1:
+    quant: "Q2_K"
+    vram_limit: "4G"
+    description: "Gremlin Mode - 2-bit chaos"
+    chaos_multiplier: 0.3
+    
+  2: 
+    quant: "Q4_K_M"
+    vram_limit: "6G"
+    description: "Standard Brutalization"
+    chaos_multiplier: 1.0
+    
+  3:
+    quant: "Q6_K"
+    vram_limit: "8G"
+    description: "Maximum Chaos"
+    chaos_multiplier: 2.5
+    unstable: true
+
+validation:
+  - name: "Model Verification"
+    cmd: "ollama list | grep '8b-{quant}'"
+    
+  - name: "VRAM Enforcement"
+    cmd: "nvidia-smi --query-gpu=memory.used --format=noheader,nounits"
+    max: "${vram_limit}"
+
+monitoring:
+  chaos_metrics:
+    - "output_coherence_score"
+    - "quantum_entanglement_factor"
+    - "tiktok_slang_ratio"

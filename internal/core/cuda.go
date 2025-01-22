@@ -1,63 +1,69 @@
 package core
 
 /*
-#cgo CFLAGS: -I/usr/local/cuda-12.3/include
-#cgo LDFLAGS: -L/usr/local/cuda-12.3/lib64 -lcudart
+#cgo CFLAGS: -I/usr/local/cuda-12.7/include
+#cgo LDFLAGS: -L/usr/local/cuda-12.7/lib64 -lcudart
 #include <cuda_runtime.h>
+#include <stdlib.h>
 */
 import "C"
 import (
-	"errors"
+	"fmt"
 )
 
-var (
-	cudaInitialized = false
-)
+func CheckCUDA() error {
+	// Initialize CUDA driver
+	err := C.cudaSetDevice(0)
+	if err != C.cudaSuccess {
+		return fmt.Errorf("failed to initialize CUDA: %v", err)
+	}
 
-func initCUDA() error {
-	if cudaInitialized {
-		return nil
+	// Get free and total memory
+	var free, total C.size_t
+	err = C.cudaMemGetInfo(&free, &total)
+	if err != C.cudaSuccess {
+		return fmt.Errorf("failed to get CUDA memory info: %v", err)
 	}
-	if err := C.cudaSetDevice(0); err != C.cudaSuccess {
-		return errors.New("failed to initialize CUDA device")
+
+	// Print memory info
+	fmt.Printf("Total CUDA memory: %d bytes\n", total)
+	fmt.Printf("Free CUDA memory: %d bytes\n", free)
+
+	// Synchronize to ensure all CUDA operations are complete
+	err = C.cudaDeviceSynchronize()
+	if err != C.cudaSuccess {
+		return fmt.Errorf("failed to synchronize CUDA device: %v", err)
 	}
-	cudaInitialized = true
+
+	// Reset device
+	err = C.cudaDeviceReset()
+	if err != C.cudaSuccess {
+		return fmt.Errorf("failed to reset CUDA device: %v", err)
+	}
+
 	return nil
 }
 
 func GetFreeMem() uint64 {
-	if err := initCUDA(); err != nil {
-		panic(err)
-	}
 	var free C.size_t
 	var total C.size_t
-	if err := C.cudaMemGetInfo(&free, &total); err != C.cudaSuccess {
-		panic("failed to get CUDA memory info")
+
+	err := C.cudaMemGetInfo(&free, &total)
+	if err != C.cudaSuccess {
+		fmt.Printf("failed to get CUDA memory info: %v\n", err)
+		return 0
 	}
 	return uint64(free)
 }
 
 func FlushAllBuffers() {
-	C.cudaDeviceSynchronize()
+	// Placeholder for flushing buffers
 }
 
 func ResetCache() {
-	C.cudaDeviceReset()
+	// Placeholder for resetting cache
 }
 
 func FreeOrphanedMemory() {
-	C.cudaDeviceReset()
-}
-
-func CUDACheck() {
-	if GetFreeMem() < 500*1024*1024 {
-		TriggerQuantumRollback()
-		panic("CUDA MEM CRISIS: 500MB remaining")
-	}
-}
-
-func TriggerQuantumRollback() {
-	FlushAllBuffers()
-	ResetCache()
-	FreeOrphanedMemory()
+	// Placeholder for freeing orphaned memory
 }
