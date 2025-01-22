@@ -12,3 +12,8 @@ const (
 	ModeBrutal
 	ModeQuantum
 )
+
+// Current generation mode configuration
+var (
+	CurrentGenerationMode GenerationMode = ModeDefault
+)

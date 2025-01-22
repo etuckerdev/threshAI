@@ -39,3 +39,7 @@ func ProcessInput(mode config.GenerationMode, input string) (string, error) {
 		return input, nil
 	}
 }
+
+func Generate(input string) (string, error) {
+	return ProcessInput(config.CurrentGenerationMode, input)
+}

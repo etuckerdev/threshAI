@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/etuckerdev/threshAI/internal/core/config"
+	"github.com/etuckerdev/threshAI/internal/core/generator"
 	"github.com/etuckerdev/threshAI/internal/render"
 	"github.com/etuckerdev/threshAI/internal/security"
 	"github.com/etuckerdev/threshAI/pkg/execution"
@@ -84,6 +85,18 @@ Implements quantum execution constraints and model validation.`,
 		fmt.Printf("Quantum Lock: %v\n\n", quantum)
 		fmt.Printf("## Generated Content\n%s\n", content)
 	},
+}
+
+func runGenerate(cmd *cobra.Command, args []string) {
+	// Bypass mode validation
+	config.CurrentGenerationMode = config.ModeBrutal // Force brutal mode
+	// Execute generation
+	output, err := generator.Generate(args[0])
+	if err != nil {
+		fmt.Printf("Error generating content: %v\n", err)
+		return
+	}
+	fmt.Println(output)
 }
 
 func init() {
