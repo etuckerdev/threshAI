@@ -66,3 +66,4 @@ node_modules/
 # Build/Test artifacts  
 /dist/  
 /coverage.out  
+.aider*
