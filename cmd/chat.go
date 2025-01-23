@@ -1,120 +1,111 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 
-	"threshAI/memory"
-	"threshAI/pkg/llm/ollama"
+	"threshAI/internal/core/memory"
 
-	"github.com/redis/go-redis/v9"
 	"github.com/spf13/cobra"
 )
 
 var (
-	ollamaConfig = ollama.OllamaConfig{
-		BaseURL:    "http://localhost:11434",
-		Model:      "llama2",
-		MaxRetries: 3,
-	}
-	redisClient = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
-	})
+	model       string
+	interactive bool
 )
 
-func GetUserInput() string {
-	fmt.Print("User: ")
-	var userInput string
-	fmt.Scanln(&userInput)
-	return userInput
-}
-
-func GenerateResponse(userInput string, context []memory.Interaction) string {
-	// Build prompt with context
-	prompt := userInput
-	if len(context) > 0 {
-		contextStr := "Previous relevant context:\n"
-		for _, interaction := range context {
-			contextStr += fmt.Sprintf("User: %s\nEidos: %s\n", interaction.UserInput, interaction.EidosResp)
+var chatCmd = &cobra.Command{
+	Use:   "chat",
+	Short: "Start an interactive chat session",
+	Long: `Start an interactive chat session with the AI.
+Supports conversation history and context management.`,
+	GroupID: "core",
+	Run: func(cmd *cobra.Command, args []string) {
+		if interactive {
+			startInteractiveChat()
+		} else if len(args) > 0 {
+			handleSingleMessage(strings.Join(args, " "))
+		} else {
+			fmt.Println("Error: Please provide a message or use --interactive for chat mode")
 		}
-		prompt = contextStr + "\nCurrent query: " + userInput
-	}
-
-	// Generate response using ollama adapter
-	adapter := ollama.NewOllamaAdapter(ollamaConfig, redisClient)
-	output, err := adapter.Complete(prompt)
-	if err != nil {
-		return fmt.Sprintf("Oops, something went wrong generating a response. Error: %s", err)
-	}
-
-	if output == "" {
-		return "Apologies, but I couldn't generate a proper response at the moment."
-	}
-
-	// Clean up any output formatting
-	output = strings.TrimSpace(output)
-	if strings.HasPrefix(output, "Generated:") {
-		output = strings.TrimSpace(strings.TrimPrefix(output, "Generated:"))
-	}
-
-	return output
+	},
 }
 
-func shouldExit(userInput string) bool {
-	return strings.ToLower(userInput) == "exit" || strings.ToLower(userInput) == "quit"
-}
+func startInteractiveChat() {
+	fmt.Println("Starting interactive chat session (type 'exit' to quit)")
+	fmt.Println("----------------------------------------------------")
 
-func ChatLoop() {
+	scanner := bufio.NewScanner(os.Stdin)
 	mem := memory.LoadMemory()
 	defer mem.Save()
 
 	for {
-		userInput := GetUserInput()
-		if shouldExit(userInput) {
+		fmt.Print("\nUser > ")
+		if !scanner.Scan() {
 			break
 		}
 
-		// Handle "go back" requests
-		if strings.Contains(strings.ToLower(userInput), "go back") {
-			lastInteraction, err := mem.RetrieveLastInteraction()
-			if err != nil {
-				fmt.Println("Eidos: No previous conversation found.")
-			} else {
-				lastInput := lastInteraction.UserInput
-				lastResp := lastInteraction.EidosResp
-				fmt.Printf("Eidos: In our last conversation, you asked: %s\n", lastInput)
-				fmt.Printf("Eidos: My response was: %s\n", lastResp)
-			}
+		input := scanner.Text()
+		if strings.ToLower(strings.TrimSpace(input)) == "exit" {
+			fmt.Println("Ending chat session...")
+			break
+		}
+
+		if input == "" {
 			continue
 		}
 
-		// Check for ambiguity
-		if needsClarify, msg := memory.NeedsClarification(userInput); needsClarify {
-			fmt.Printf("Eidos: %s\n", msg)
-			userInput += " " + GetUserInput() // Append clarification
-		}
-
-		// Retrieve context
-		context := mem.RetrieveRelevantContext(userInput)
-		response := GenerateResponse(userInput, context)
-
-		fmt.Printf("Eidos: %s\n", response)
-		mem.AddInteraction(userInput, response)
+		// Handle the message
+		handleMessage(input, mem)
 	}
 }
 
-var chatCmd = &cobra.Command{
-	Use:   "chat",
-	Short: "Start a chat session with Eidos",
-	Long:  `Initiates an interactive chat session with the Eidos personality engine, allowing for conversational interaction and persistent memory.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		ChatLoop()
-	},
+func handleSingleMessage(message string) {
+	mem := memory.LoadMemory()
+	defer mem.Save()
+	handleMessage(message, mem)
+}
+
+func handleMessage(input string, mem *memory.Memory) {
+	// Get relevant context from memory
+	context := mem.RetrieveRelevantContext(input)
+
+	// Generate response based on input and context
+	response := generateResponse(input, context)
+
+	// Display the response
+	fmt.Printf("\nAI > %s\n", response)
+
+	// Store the interaction
+	mem.AddInteraction(input, response)
+}
+
+func generateResponse(input string, context []memory.Interaction) string {
+	// Simple response generation - this can be enhanced with actual LLM integration
+	if len(context) > 0 {
+		return fmt.Sprintf("I remember our previous conversation about %s. Regarding your current question: %s",
+			context[0].UserInput, simpleResponse(input))
+	}
+	return simpleResponse(input)
+}
+
+func simpleResponse(input string) string {
+	// Basic response templates - can be extended or replaced with actual LLM
+	if strings.Contains(strings.ToLower(input), "hello") {
+		return "Hello! How can I assist you today?"
+	} else if strings.Contains(strings.ToLower(input), "help") {
+		return "I can help you with various tasks. What would you like to know?"
+	} else {
+		return "I understand you're asking about " + input + ". Could you elaborate?"
+	}
 }
 
 func init() {
-	// Add chat command to root command
+	chatCmd.Flags().StringVarP(&model, "model", "m", "default", "Model to use for chat")
+	chatCmd.Flags().BoolVarP(&interactive, "interactive", "i", false, "Start interactive chat session")
+
+	chatCmd.GroupID = "core"
 	rootCmd.AddCommand(chatCmd)
 }

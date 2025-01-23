@@ -101,6 +101,8 @@ func modelAvailable(target string) bool {
 func IsValidSecurityModel(model string) bool {
 	approvedModels := []string{
 		"withsecure/llama3-8b",
+		"withsecure/llama3-13b",
+		"withsecure/quantum-resistant-1b",
 		"nous-hermes2:10.7b-secure",
 	}
 	return contains(approvedModels, model)

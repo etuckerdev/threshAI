@@ -1,59 +1,86 @@
 # Contributing to threshAI
 
-Thank you for considering contributing to threshAI! We appreciate your interest in making this project better.
+We welcome contributions from the community! Here are the guidelines to help you get started.
 
 ## Getting Started
 
-1. **Fork** the repository on GitHub
-2. **Clone** your forked repository
-3. Create a new **feature branch** for your changes
-4. Make your changes following our coding standards
-5. Write tests for your changes
-6. Commit your changes with clear, descriptive messages
-7. Push your changes to your fork
-8. Open a **Pull Request**
+1. **Fork the Repository**: Start by forking the threshAI repository to your GitHub account.
 
-## Coding Standards
+2. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/[your-username]/threshAI.git
+   cd threshAI
+   ```
 
-- Follow Go's official [Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
-- Use descriptive variable and function names
-- Keep functions small and focused
-- Add comments where necessary to explain complex logic
-- Write tests for all new functionality
+3. **Set Up the Environment**:
+   - Ensure you have Go 1.21+ installed.
+   - Install Node.js 16+ for frontend development.
+   - Install Docker 20.10+ for containerized deployment.
+   - Install golangci-lint for development.
+   - Install Git for version control.
 
-## Commit Message Guidelines
+4. **Install Dependencies**:
+   ```bash
+   make deps
+   ```
 
-- Use the present tense ("Add feature" not "Added feature")
-- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-- Limit the first line to 72 characters or less
-- Reference issues and pull requests liberally
+5. **Run Security Checks**:
+   ```bash
+   make security-check
+   ```
 
-Example:
-```
-feat: add new quantum generation endpoint
+6. **Build and Test**:
+   ```bash
+   make all
+   ```
 
-Adds support for quantum shard generation with entanglement calculation.
-Includes tests and documentation updates.
+## Making Changes
 
-Resolves: #123
-```
+1. **Create a Feature Branch**:
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
 
-## Pull Request Process
+2. **Make Your Changes**: Implement your feature or fix.
 
-1. Ensure your code passes all tests
-2. Update documentation if needed
-3. Include relevant tests
-4. Describe your changes in the PR description
-5. Reference any related issues
-6. Wait for code review and address any feedback
+3. **Run Tests and Security Checks**:
+   ```bash
+   make all security-check
+   ```
 
-## Development Environment Setup
+4. **Commit Your Changes**:
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
 
-See the [README.md](README.md) for detailed setup instructions.
+5. **Push to the Branch**:
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
 
-## Need Help?
+6. **Open a Pull Request**: Go to the threshAI repository on GitHub and open a pull request from your feature branch.
 
-If you have questions about contributing, please:
-- Check the [documentation](README.md)
-- Open an issue with your question
-- Join our [community chat](https://your-community-link.here)
+## Code Style
+
+- Follow the existing code style and conventions.
+- Write clear and concise comments.
+- Ensure your code is well-documented.
+
+## Reporting Issues
+
+Found a bug? Please [open an issue](https://github.com/[org]/threshAI/issues) and include:
+
+- Detailed description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots (if applicable)
+- Version information (`thresh --version`)
+- Environment details (OS, Go version, Docker version)
+
+## Code of Conduct
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
