@@ -5,9 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"threshAI/pkg/security"
 	"time"
-
-	"threshAI/internal/security"
 
 	"github.com/spf13/cobra"
 )

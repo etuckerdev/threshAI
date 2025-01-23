@@ -1,0 +1,12 @@
+bin/
+vendor/
+.git/
+.vscode/
+*.md
+!README.md
+frontend/node_modules/
+frontend/build/
+.env*
+*.log
+tmp/
+dist/

@@ -1,11 +1,12 @@
 # Build and run the entire application
 .PHONY: all
-all: build run
+all: deps build test lint
 
-# Build all services
+# Build all services and CLI
 .PHONY: build
 build:
 	docker-compose build
+	go build -o bin/thresh cmd/cli/main.go
 
 # Run the application
 .PHONY: run
@@ -43,23 +44,41 @@ dev-frontend:
 .PHONY: dev-backend
 dev-backend:
 	go run cmd/web/main.go
+# Install Dependencies
+.PHONY: deps
+deps:
+	go mod download
 
 # Run tests
 .PHONY: test
 test:
-	go test ./...
+	go test -cover ./...
 
+# Run CLI
+.PHONY: run-cli
+run-cli:
+	go run cmd/cli/main.go -provider deepseek -prompt "Hello world"
+
+# Lint
+.PHONY: lint
+lint:
+	golangci-lint run
+
+# Help command
 # Help command
 .PHONY: help
 help:
 	@echo "Available commands:"
-	@echo "  make all          - Build and run the application"
-	@echo "  make build        - Build all services"
+	@echo "  make all          - Run deps, build, test, and lint"
+	@echo "  make build        - Build all services and CLI binary"
 	@echo "  make run          - Run the application"
+	@echo "  make run-cli      - Run the CLI with deepseek provider"
 	@echo "  make stop         - Stop all services"
 	@echo "  make clean        - Clean up docker resources"
 	@echo "  make models       - Pull required Ollama models"
+	@echo "  make deps         - Install Go dependencies"
 	@echo "  make dev-setup    - Install development dependencies"
 	@echo "  make dev-frontend - Run frontend in development mode"
 	@echo "  make dev-backend  - Run backend in development mode"
-	@echo "  make test         - Run tests"
+	@echo "  make test         - Run tests with coverage"
+	@echo "  make lint         - Run golangci-lint"

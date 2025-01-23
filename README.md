@@ -17,10 +17,36 @@ git clone https://github.com/[org]/threshAI.git
 cd threshAI
 
 # Install dependencies
-make install
+make deps
 
-# Start the development server
-make dev
+# Build, test, and lint
+make all
+
+# Run the CLI
+make run-cli
+```
+
+### Build & Run
+
+#### Using Makefile
+```bash
+make build   # Build the binary
+make run     # Run the web server
+make run-cli # Run the CLI
+make test    # Run tests with coverage
+make lint    # Lint the code
+make clean   # Clean up artifacts
+make all     # Run deps, build, test, and lint
+```
+
+#### Using Docker
+```bash
+# Build and run the CLI
+docker build -t threshai-cli -f Dockerfile.cli .
+docker run threshai-cli -provider deepseek -prompt "Hello world"
+
+# Build and run the web server
+docker-compose up --build
 ```
 
 ## Development
